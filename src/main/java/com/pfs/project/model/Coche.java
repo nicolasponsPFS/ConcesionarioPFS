@@ -3,7 +3,10 @@ package com.pfs.project.model;
 import java.io.Serializable;
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -20,12 +23,12 @@ public class Coche implements Serializable{
 	@GeneratedValue
 	private Integer id;
 	private String marca, modelo, matricula;
-	private Estado estado;
+	private Estado estado = Estado.Nuevo;
 	private Motor motor = Motor.Gasolina;
 	private Double precio;
-	private Date anyo;
-	private Integer potencia;
+	private Integer anyo, potencia;
 	private Boolean disponible;
+	@Column(name="vendedor_id")
 	private Vendedor vendedor;
 	
 	public Coche() {
@@ -33,7 +36,7 @@ public class Coche implements Serializable{
 	}
 	
 	public Coche(Integer id, String marca, String modelo, String matricula, Estado estado, Motor motor, Double precio,
-			Date anyo, Integer potencia, Boolean disponible, Vendedor vendedor) {
+			Integer anyo, Integer potencia, Boolean disponible, Vendedor vendedor) {
 		super();
 		this.id = id;
 		this.marca = marca;
@@ -80,6 +83,7 @@ public class Coche implements Serializable{
 		this.matricula = matricula;
 	}
 	
+	@Enumerated(EnumType.STRING)
 	public Estado getEstado() {
 		return estado;
 	}
@@ -88,6 +92,7 @@ public class Coche implements Serializable{
 		this.estado = estado;
 	}
 	
+	@Enumerated(EnumType.STRING)
 	public Motor getMotor() {
 		return motor;
 	}
@@ -103,11 +108,11 @@ public class Coche implements Serializable{
 		this.precio = precio;
 	}
 	
-	public Date getAnyo() {
+	public Integer getAnyo() {
 		return anyo;
 	}
 	
-	public void setAnyo(Date anyo) {
+	public void setAnyo(Integer anyo) {
 		this.anyo = anyo;
 	}
 	
@@ -136,4 +141,13 @@ public class Coche implements Serializable{
 	public void setIdVendedor(Vendedor vendedor) {
 		this.vendedor = vendedor;
 	}
+
+	@Override
+	public String toString() {
+		return "Coche [id=" + id + ", marca=" + marca + ", modelo=" + modelo + ", matricula=" + matricula + ", estado="
+				+ estado + ", motor=" + motor + ", precio=" + precio + ", anyo=" + anyo + ", potencia=" + potencia
+				+ ", disponible=" + disponible + ", vendedor=" + vendedor + "]";
+	}
+	
+	
 }

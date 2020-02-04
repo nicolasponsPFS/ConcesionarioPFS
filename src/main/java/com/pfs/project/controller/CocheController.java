@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pfs.project.model.Coche;
+import com.pfs.project.model.Vendedor;
 import com.pfs.project.service.CocheService;
 import com.pfs.project.service.interfaces.CocheServiceInterface;
 
@@ -21,9 +22,12 @@ public class CocheController {
 	@Autowired
 	private CocheServiceInterface cocheService;
 	
+	@Autowired
+	private Vendedor vendedor;
+	
 	@RequestMapping(value="/add", method=RequestMethod.GET)
 	public ModelAndView addCochePage() {
-		ModelAndView modelAndView = new ModelAndView("add-coche-form");
+		ModelAndView modelAndView = new ModelAndView("add-coche");
 		modelAndView.addObject("coche", new Coche());
 		return modelAndView;
 	}
@@ -42,7 +46,7 @@ public class CocheController {
 	
 	@RequestMapping(value="/list")
 	public ModelAndView listOfCoches() {
-		ModelAndView modelAndView = new ModelAndView("list-of-teams");
+		ModelAndView modelAndView = new ModelAndView("home");
 		
 		List<Coche> coches = cocheService.getCoches();
 		modelAndView.addObject("coches", coches);

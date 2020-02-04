@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.context.annotation.Scope;
+
 @Entity
 @Table(name="Vendedor")
 public class Vendedor implements Serializable{
@@ -69,6 +71,12 @@ public class Vendedor implements Serializable{
 
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
+	}
+
+	@Override
+	public String toString() {
+		return "Vendedor [id=" + id + ", usuario=" + usuario + ", pass=" + pass + ", nombre=" + nombre + ", apellidos="
+				+ apellidos + "]";
 	}
 	
 }

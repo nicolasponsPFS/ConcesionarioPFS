@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.pfs.project.dao.interfaces.VendedorDAOInterface;
+import com.pfs.project.model.Coche;
 import com.pfs.project.model.Vendedor;
 
 @Repository
@@ -41,6 +42,18 @@ public class VendedorDAO implements VendedorDAOInterface{
 
 	public List<Vendedor> getVendedores() {
 		return getCurrentSession().createQuery("from "+TABLE_NAME).list();
+	}
+
+	public Vendedor getVendedorByUsername(String name) {
+		String hql = "from " + TABLE_NAME + " v where v.usuario = :name";
+		List<Vendedor> v = getCurrentSession().createQuery(hql).setParameter("name", name).list();
+		if(v.size() > 0) return v.get(0);
+		return null;
+	}
+
+	public List<Coche> getCochesVendedor(int id) {
+		String hql = "from " + CocheDAO.TABLE_NAME + " c where c.vendedor_id = :id";
+		return getCurrentSession().createQuery(hql).setParameter("id", id).list();
 	}
 
 }

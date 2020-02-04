@@ -12,14 +12,14 @@ import com.pfs.project.model.Coche;
 
 @Repository
 public class CocheDAO implements CocheDAOInterface {
-	
+
 	@Autowired
 	private SessionFactory sessionFactory;
-	
+
 	private Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();
 	}
-	
+
 	public void addCoche(Coche coche) {
 		getCurrentSession().save(coche);
 	}
@@ -40,7 +40,7 @@ public class CocheDAO implements CocheDAOInterface {
 	}
 
 	public List<Coche> getCoches() {
-		return getCurrentSession().createQuery("from "+TABLE_NAME).list();
+		return getCurrentSession().createQuery("from " + TABLE_NAME).list();
 	}
 
 }

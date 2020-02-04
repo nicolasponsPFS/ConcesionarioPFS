@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pfs.project.dao.interfaces.VendedorDAOInterface;
+import com.pfs.project.model.Coche;
 import com.pfs.project.model.Vendedor;
 import com.pfs.project.service.interfaces.VendedorServiceInterface;
 
@@ -35,6 +36,14 @@ public class VendedorService implements VendedorServiceInterface {
 
 	public List<Vendedor> getVendedores() {
 		return vendedorDAO.getVendedores();
+	}
+
+	public Vendedor getVendedorByUsername(String name) {
+		return vendedorDAO.getVendedorByUsername(name);
+	}
+
+	public List<Coche> getCochesVendedor(int id) {
+		return vendedorDAO.getCochesVendedor(id);
 	}
 
 }
