@@ -51,9 +51,9 @@ public class VendedorDAO implements VendedorDAOInterface{
 		return null;
 	}
 
-	public List<Coche> getCochesVendedor(int id) {
-		String hql = "from " + CocheDAO.TABLE_NAME + " c where c.vendedor_id = :id";
-		return getCurrentSession().createQuery(hql).setParameter("id", id).list();
+	public List<Coche> getCochesVendedor(Vendedor vendedor) {
+		String hql = "from " + CocheDAO.TABLE_NAME + " c where c.vendedor = :id";
+		return getCurrentSession().createQuery(hql).setParameter("id", vendedor).list();
 	}
 
 }

@@ -11,15 +11,9 @@ import com.pfs.project.model.Vendedor;
 @Controller
 public class LinkController {
 	
-	@Autowired
-	private Vendedor vendedor;
-	
 	@RequestMapping(value="/")
 	public String mainPage() {
-		System.out.println(vendedor.toString());
-		if(vendedor.getId() == null)
-			return "redirect:/vendedor/login";
-		return "redirect:/vendedor/home";
+		return "redirect:/vendedor/login";
 	}
 	
 	@RequestMapping(value="/index")

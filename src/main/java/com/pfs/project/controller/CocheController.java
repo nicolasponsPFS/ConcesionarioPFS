@@ -22,9 +22,6 @@ public class CocheController {
 	@Autowired
 	private CocheServiceInterface cocheService;
 	
-	@Autowired
-	private Vendedor vendedor;
-	
 	@RequestMapping(value="/add", method=RequestMethod.GET)
 	public ModelAndView addCochePage() {
 		ModelAndView modelAndView = new ModelAndView("add-coche");
@@ -35,7 +32,7 @@ public class CocheController {
 	@RequestMapping(value="/add", method=RequestMethod.POST)
 	public ModelAndView addingCoche(@ModelAttribute Coche coche) {
 		
-		ModelAndView modelAndView = new ModelAndView("home");
+		ModelAndView modelAndView = new ModelAndView("list-coche");
 		cocheService.addCoche(coche);
 		
 		String message = "Coche was successfully added.";
@@ -44,11 +41,15 @@ public class CocheController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="/list")
+	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public ModelAndView listOfCoches() {
-		ModelAndView modelAndView = new ModelAndView("home");
+		ModelAndView modelAndView = new ModelAndView("list-coche");
 		
 		List<Coche> coches = cocheService.getCoches();
+		System.out.println("Num coches: " + coches.size());
+		for (Coche coche : coches) {
+			System.out.println(coche.print());
+		}
 		modelAndView.addObject("coches", coches);
 		
 		return modelAndView;

@@ -7,30 +7,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.context.annotation.Scope;
-
 @Entity
 @Table(name="Vendedor")
-public class Vendedor implements Serializable{
-
-	private static final long serialVersionUID = 1L;
+public class Vendedor {
 	
 	@Id 
 	@GeneratedValue
 	private Integer id;
-	private String usuario, pass, nombre, apellidos;
+	private String usuario, pass, nombre, apellido;
 	
 	public Vendedor() {
 		super();
 	}
 
-	public Vendedor(Integer id, String usuario, String pass, String nombre, String apellidos) {
+	public Vendedor(Integer id, String usuario, String pass, String nombre, String apellido) {
 		super();
 		this.id = id;
 		this.usuario = usuario;
 		this.pass = pass;
 		this.nombre = nombre;
-		this.apellidos = apellidos;
+		this.apellido = apellido;
 	}
 
 	public Integer getId() {
@@ -65,18 +61,18 @@ public class Vendedor implements Serializable{
 		this.nombre = nombre;
 	}
 
-	public String getApellidos() {
-		return apellidos;
+	public String getApellido() {
+		return apellido;
 	}
 
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
 	}
 
-	@Override
-	public String toString() {
-		return "Vendedor [id=" + id + ", usuario=" + usuario + ", pass=" + pass + ", nombre=" + nombre + ", apellidos="
-				+ apellidos + "]";
+	
+	public String print() {
+		return "Vendedor [id=" + id + ", usuario=" + usuario + ", pass=" + pass + ", nombre=" + nombre + ", apellido="
+				+ apellido + "]";
 	}
 	
 }

@@ -17,13 +17,11 @@ public class VendedorController {
 
 	@Autowired
 	private VendedorServiceInterface vendedorService;
-	
-	@Autowired
-	private Vendedor vendedor;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView loginPage() {
 		ModelAndView modelAndView = new ModelAndView("login-page");
+		modelAndView.addObject("vendedor", new Vendedor());
 		return modelAndView;
 	}
 
@@ -31,18 +29,19 @@ public class VendedorController {
 	public ModelAndView loginCheck(@ModelAttribute Vendedor vendedor) {
 		Vendedor v = vendedorService.getVendedorByUsername(vendedor.getUsuario());
 		ModelAndView modelAndView = new ModelAndView("error-page");
+		System.out.println(v.print());
 		if (v != null) {
 			if (v.getPass().equals(vendedor.getPass())) {
-				this.vendedor = v;
 				modelAndView = new ModelAndView("home-page");
+				modelAndView.addObject("nombre", v.getNombre());
 			}
 			else {
-				//TODO tratar pass no valida
-				System.out.println("Contraseña no valida");}
+				modelAndView.addObject("err", "Contraseña no valida");
+			}
 		} else {
-			//TODO usuario no valido
-			System.out.println("Usuario no valido");
+			modelAndView.addObject("err", "Usuario no valido");
 		}
+			
 		return modelAndView;
 	}
 
@@ -66,7 +65,7 @@ public class VendedorController {
 			vendedorService.addVendedor(vendedor);
 			modelAndView = new ModelAndView("login-page");
 		} else {
-			System.out.println("Usuario ya existe");
+			modelAndView.addObject("err", "El usuario "+vendedor.getUsuario()+" ya existe");
 		}
 		return modelAndView;
 	}
@@ -91,7 +90,6 @@ public class VendedorController {
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public ModelAndView deleteVendedor(@PathVariable Integer id) {
 		ModelAndView modelAndView = new ModelAndView("login-page");
-		this.vendedor = new Vendedor();
 		vendedorService.deleteVendedor(id);
 		return modelAndView;
 	}
@@ -99,7 +97,6 @@ public class VendedorController {
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public ModelAndView logout() {
 		ModelAndView modelAndView = new ModelAndView("login-page");
-		this.vendedor = new Vendedor();
 		return modelAndView;
 	}
 

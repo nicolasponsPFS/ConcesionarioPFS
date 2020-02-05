@@ -15,5 +15,5 @@ public interface VendedorDAOInterface {
 	public Vendedor getVendedorByUsername(String name);
 	public void deleteVendedor(int id);
 	public List<Vendedor> getVendedores();
-	public List<Coche> getCochesVendedor(int id);
+	public List<Coche> getCochesVendedor(Vendedor vendedor);
 }

@@ -15,7 +15,7 @@ import com.pfs.project.service.interfaces.CocheServiceInterface;
 import com.pfs.project.service.interfaces.VendedorServiceInterface;
 
 @Controller
-@RequestMapping(value = "/vendedor/coche")
+@RequestMapping(value = "/vendedor/{idVendedor}/coche")
 public class VendedorCocheController {
 
 	@Autowired
@@ -24,45 +24,44 @@ public class VendedorCocheController {
 	@Autowired
 	private CocheServiceInterface cocheService;
 	
-	@Autowired
-	private Vendedor vendedor;
-	
-	@RequestMapping(value="/", method=RequestMethod.GET)
-	public ModelAndView listCochesVendedor() {
+	@RequestMapping(value="/list", method=RequestMethod.GET)
+	public ModelAndView listCochesVendedor(@PathVariable Integer idVendedor) {
 		ModelAndView modelAndView = new ModelAndView("list-coche");
-		List<Coche> coches = vendedorService.getCochesVendedor(this.vendedor.getId());
-		//TODO tratar coches
+		Vendedor v = vendedorService.getVendedor(idVendedor);
+		List<Coche> coches = vendedorService.getCochesVendedor(v);
+		modelAndView.addObject("coches", coches);
 		return modelAndView;
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ModelAndView detailCocheVendedor(@PathVariable Integer cocheId) {
+	public ModelAndView detailCocheVendedor(@PathVariable Integer idVendedor, @PathVariable Integer id) {
 		ModelAndView modelAndView = new ModelAndView("coche-page");
-		Coche c = cocheService.getCoche(cocheId);
+		Coche c = cocheService.getCoche(id);
 		//TODO tratar coche
 		return modelAndView;
 	}
 	
 	@RequestMapping(value="/{id}/sell", method=RequestMethod.PUT)
-	public ModelAndView sellCocheVendedor(@PathVariable Integer cocheId) {
+	public ModelAndView sellCocheVendedor(@PathVariable Integer idVendedor, @PathVariable Integer id) {
 		ModelAndView modelAndView = new ModelAndView("coche-page");
-		Coche c = cocheService.getCoche(cocheId);
-		c.setIdVendedor(vendedor);
+		Coche c = cocheService.getCoche(id);
+		Vendedor v = vendedorService.getVendedor(idVendedor);
+		c.setVendedor(v);
 		cocheService.updateCoche(c);
 		//TODO Mostrar alerta
-		System.out.println(c.toString());
+		System.out.println(c.print());
 		return modelAndView;
 	}
 	
 	@RequestMapping(value="/{id}/refund", method=RequestMethod.PUT)
-	public ModelAndView refundCocheVendedor(@PathVariable Integer cocheId) {
+	public ModelAndView refundCocheVendedor(@PathVariable Integer idVendedor, @PathVariable Integer cocheId) {
 		ModelAndView modelAndView = new ModelAndView("coche-page");
 		Coche c = cocheService.getCoche(cocheId);
 		Vendedor v = vendedorService.getVendedor(1);
-		c.setIdVendedor(v);
+		c.setVendedor(v);
 		cocheService.updateCoche(c);
 		//TODO Mostrar alerta
-		System.out.println(c.toString());
+		System.out.println(c.print());
 		return modelAndView;
 	}
 }

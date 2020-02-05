@@ -1,7 +1,6 @@
 package com.pfs.project.model;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,20 +14,23 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="Coche")
-public class Coche implements Serializable{
-
-	private static final long serialVersionUID = 1L;
+public class Coche {
 	
 	@Id
 	@GeneratedValue
 	private Integer id;
 	private String marca, modelo, matricula;
+	@Column(columnDefinition = "ENUM('Nuevo', 'Segunda_Mano', 'Km_0')")
+	@Enumerated(EnumType.STRING)
 	private Estado estado = Estado.Nuevo;
+	@Enumerated(EnumType.STRING)
+	@Column(columnDefinition = "ENUM('Gasolina', 'Diesel', 'Hibrido', 'Electrico')")
 	private Motor motor = Motor.Gasolina;
 	private Double precio;
 	private Integer anyo, potencia;
 	private Boolean disponible;
-	@Column(name="vendedor_id")
+	@ManyToOne(targetEntity = Vendedor.class)
+	@JoinColumn(name = "vendedor_id")
 	private Vendedor vendedor;
 	
 	public Coche() {
@@ -83,7 +85,6 @@ public class Coche implements Serializable{
 		this.matricula = matricula;
 	}
 	
-	@Enumerated(EnumType.STRING)
 	public Estado getEstado() {
 		return estado;
 	}
@@ -92,7 +93,7 @@ public class Coche implements Serializable{
 		this.estado = estado;
 	}
 	
-	@Enumerated(EnumType.STRING)
+	
 	public Motor getMotor() {
 		return motor;
 	}
@@ -132,18 +133,17 @@ public class Coche implements Serializable{
 		this.disponible = disponible;
 	}
 	
-	@ManyToOne(targetEntity = Vendedor.class)
-	@JoinColumn(name = "vendedor_id")
-	public Vendedor getIdVendedor() {
+	
+	public Vendedor getVendedor() {
 		return vendedor;
 	}
 	
-	public void setIdVendedor(Vendedor vendedor) {
+	public void setVendedor(Vendedor vendedor) {
 		this.vendedor = vendedor;
 	}
 
-	@Override
-	public String toString() {
+	
+	public String print() {
 		return "Coche [id=" + id + ", marca=" + marca + ", modelo=" + modelo + ", matricula=" + matricula + ", estado="
 				+ estado + ", motor=" + motor + ", precio=" + precio + ", anyo=" + anyo + ", potencia=" + potencia
 				+ ", disponible=" + disponible + ", vendedor=" + vendedor + "]";

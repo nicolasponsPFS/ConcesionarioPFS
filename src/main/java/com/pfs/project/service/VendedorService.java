@@ -42,8 +42,8 @@ public class VendedorService implements VendedorServiceInterface {
 		return vendedorDAO.getVendedorByUsername(name);
 	}
 
-	public List<Coche> getCochesVendedor(int id) {
-		return vendedorDAO.getCochesVendedor(id);
+	public List<Coche> getCochesVendedor(Vendedor vendedor) {
+		return vendedorDAO.getCochesVendedor(vendedor);
 	}
 
 }
