@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.json.JSONObject;
+
 @Entity
 @Table(name="Vendedor")
 public class Vendedor {
@@ -73,6 +75,16 @@ public class Vendedor {
 	public String print() {
 		return "Vendedor [id=" + id + ", usuario=" + usuario + ", pass=" + pass + ", nombre=" + nombre + ", apellido="
 				+ apellido + "]";
+	}
+	
+	public JSONObject toJSON() {
+		JSONObject obj = new JSONObject();
+		obj.put("id", id);
+		obj.put("nombre", nombre);
+		obj.put("apellido", apellido);
+		obj.put("usuario", usuario);
+		obj.put("pass", pass);
+		return obj;
 	}
 	
 }

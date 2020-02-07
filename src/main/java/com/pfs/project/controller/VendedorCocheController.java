@@ -7,12 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pfs.project.model.Coche;
 import com.pfs.project.model.Vendedor;
 import com.pfs.project.service.interfaces.CocheServiceInterface;
 import com.pfs.project.service.interfaces.VendedorServiceInterface;
+import com.pfs.project.util.CustomResponse;
 
 @Controller
 @RequestMapping(value = "/vendedor/{idVendedor}/coche")
@@ -25,12 +27,10 @@ public class VendedorCocheController {
 	private CocheServiceInterface cocheService;
 	
 	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public ModelAndView listCochesVendedor(@PathVariable Integer idVendedor) {
-		ModelAndView modelAndView = new ModelAndView("list-coche");
+	public @ResponseBody CustomResponse listCochesVendedor(@PathVariable Integer idVendedor) {
 		Vendedor v = vendedorService.getVendedor(idVendedor);
 		List<Coche> coches = vendedorService.getCochesVendedor(v);
-		modelAndView.addObject("coches", coches);
-		return modelAndView;
+		return null;
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)

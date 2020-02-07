@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 import com.pfs.project.model.Vendedor;
 import com.pfs.project.service.interfaces.VendedorServiceInterface;
+import com.pfs.project.util.CustomResponse;
 
 @Controller
 @RequestMapping(value = "/vendedor")
@@ -18,86 +18,62 @@ public class VendedorController {
 	@Autowired
 	private VendedorServiceInterface vendedorService;
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView loginPage() {
-		ModelAndView modelAndView = new ModelAndView("login-page");
-		modelAndView.addObject("vendedor", new Vendedor());
-		return modelAndView;
-	}
-
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ModelAndView loginCheck(@ModelAttribute Vendedor vendedor) {
+	public @ResponseBody CustomResponse loginCheck(@ModelAttribute Vendedor vendedor) {
 		Vendedor v = vendedorService.getVendedorByUsername(vendedor.getUsuario());
-		ModelAndView modelAndView = new ModelAndView("error-page");
-		System.out.println(v.print());
+		CustomResponse response = new CustomResponse();
 		if (v != null) {
 			if (v.getPass().equals(vendedor.getPass())) {
-				modelAndView = new ModelAndView("home-page");
-				modelAndView.addObject("nombre", v.getNombre());
+				response.setMsg("Correcto");
+				response.setBody(v.toJSON());
 			}
 			else {
-				modelAndView.addObject("err", "Contraseña no valida");
+				response.setMsg("Contraseña no valida");
 			}
 		} else {
-			modelAndView.addObject("err", "Usuario no valido");
+			response.setMsg("Usuario no valido");
 		}
 			
-		return modelAndView;
-	}
-
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public ModelAndView homePage() {
-		ModelAndView modelAndView = new ModelAndView("home-page");
-		return modelAndView;
-	}
-	
-	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public ModelAndView signupPage() {
-		ModelAndView modelAndView = new ModelAndView("signup-form");
-		return modelAndView;
+		return response;
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ModelAndView addingVendedor(@ModelAttribute Vendedor vendedor) {
+	public @ResponseBody CustomResponse addingVendedor(@ModelAttribute Vendedor vendedor) {
 		Vendedor v = vendedorService.getVendedorByUsername(vendedor.getNombre());
-		ModelAndView modelAndView = new ModelAndView("error-page");
+		CustomResponse response = new CustomResponse();
 		if (v == null) {
 			vendedorService.addVendedor(vendedor);
-			modelAndView = new ModelAndView("login-page");
+			response.setMsg("Usuario registrado correctamente");
+			response.setBody(vendedor.toJSON());
 		} else {
-			modelAndView.addObject("err", "El usuario "+vendedor.getUsuario()+" ya existe");
+			response.setMsg("El usuario "+vendedor.getUsuario()+" ya existe");
 		}
-		return modelAndView;
+		return response;
 	}
 
-	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-	public ModelAndView editVendedorPage(@PathVariable Integer id) {
-		ModelAndView modelAndView = new ModelAndView("edit-vendedor-form");
-		Vendedor vendedor = vendedorService.getVendedor(id);
-		modelAndView.addObject("vendedor", vendedor);
-		return modelAndView;
-	}
-
-	@RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
-	public ModelAndView edditingVendedor(@ModelAttribute Vendedor vendedor, @PathVariable Integer id) {
-
-		ModelAndView modelAndView = new ModelAndView("home-page");
-
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.PUT)
+	public @ResponseBody CustomResponse edditingVendedor(@ModelAttribute Vendedor vendedor, @PathVariable Integer id) {
+		CustomResponse response = new CustomResponse();
 		vendedorService.updateVendedor(vendedor);
-		return modelAndView;
+		response.setMsg("Usuario actualizado correctamente");
+		response.setBody(vendedor.toJSON());
+		return response;
 	}
 
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	public ModelAndView deleteVendedor(@PathVariable Integer id) {
-		ModelAndView modelAndView = new ModelAndView("login-page");
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	public @ResponseBody CustomResponse deleteVendedor(@PathVariable Integer id) {
+		CustomResponse response = new CustomResponse();
 		vendedorService.deleteVendedor(id);
-		return modelAndView;
+		response.setMsg("Usuario borrado con id: "+id);
+		return response;
 	}
 	
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public ModelAndView logout() {
-		ModelAndView modelAndView = new ModelAndView("login-page");
-		return modelAndView;
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	public @ResponseBody CustomResponse logout() {
+		CustomResponse response = new CustomResponse();
+		response.setMsg("Adios!");
+		response.setBody(new Vendedor().toJSON());
+		return response;
 	}
 
 }

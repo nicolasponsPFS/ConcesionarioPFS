@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.json.JSONObject;
+
 @Entity
 @Table(name="Coche")
 public class Coche {
@@ -149,5 +151,20 @@ public class Coche {
 				+ ", disponible=" + disponible + ", vendedor=" + vendedor + "]";
 	}
 	
+	public JSONObject toJSON() {
+		JSONObject obj = new JSONObject();
+		obj.put("id", id);
+		obj.put("marca", marca);
+		obj.put("modelo", modelo);
+		obj.put("matricula", matricula);
+		obj.put("estado", estado);
+		obj.put("motor", motor);
+		obj.put("precio", precio);
+		obj.put("anyo", anyo);
+		obj.put("potencia", potencia);
+		obj.put("disponible", disponible);
+		obj.put("idVendedor", vendedor.getId());
+		return obj;
+	}
 	
 }
