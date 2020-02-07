@@ -2,18 +2,21 @@ package com.pfs.project.controller;
 
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pfs.project.model.Coche;
 import com.pfs.project.model.Vendedor;
 import com.pfs.project.service.CocheService;
 import com.pfs.project.service.interfaces.CocheServiceInterface;
+import com.pfs.project.util.CustomResponse;
 
 @Controller
 @RequestMapping(value="/coche")
@@ -22,67 +25,42 @@ public class CocheController {
 	@Autowired
 	private CocheServiceInterface cocheService;
 	
-	@RequestMapping(value="/add", method=RequestMethod.GET)
-	public ModelAndView addCochePage() {
-		ModelAndView modelAndView = new ModelAndView("add-coche");
-		modelAndView.addObject("coche", new Coche());
-		return modelAndView;
-	}
-	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
-	public ModelAndView addingCoche(@ModelAttribute Coche coche) {
-		
-		ModelAndView modelAndView = new ModelAndView("list-coche");
+	public @ResponseBody CustomResponse addingCoche(@ModelAttribute Coche coche) {
+		CustomResponse response = new CustomResponse();
 		cocheService.addCoche(coche);
-		
-		String message = "Coche was successfully added.";
-		modelAndView.addObject("message", message);
-		
-		return modelAndView;
+		response.setMsg("Coche añadido correctamente");
+		response.setBody(coche.toJSON());
+		return response;
 	}
 	
 	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public ModelAndView listOfCoches() {
-		ModelAndView modelAndView = new ModelAndView("list-coche");
-		
+	public @ResponseBody CustomResponse listOfCoches() {
+		CustomResponse response = new CustomResponse();
 		List<Coche> coches = cocheService.getCoches();
-		System.out.println("Num coches: " + coches.size());
-		for (Coche coche : coches) {
-			System.out.println(coche.print());
-		}
-		modelAndView.addObject("coches", coches);
-		
-		return modelAndView;
+		JSONObject array = new JSONObject();
+		array.put("coches", coches);
+		response.setMsg("Correcto");
+		response.setBody(array);
+		return response;
 	}
 	
-	@RequestMapping(value="/edit/{id}", method=RequestMethod.GET)
-	public ModelAndView editCochePage(@PathVariable Integer id) {
-		ModelAndView modelAndView = new ModelAndView("edit-team-form");
-		Coche coche = cocheService.getCoche(id);
-		modelAndView.addObject("coche",coche);
-		return modelAndView;
-	}
-	
-	@RequestMapping(value="/edit/{id}", method=RequestMethod.POST)
-	public ModelAndView edditingCoche(@ModelAttribute Coche coche, @PathVariable Integer id) {
-		
-		ModelAndView modelAndView = new ModelAndView("home");
-		
+	@RequestMapping(value="/edit/{id}", method=RequestMethod.PUT)
+	public @ResponseBody CustomResponse edditingCoche(@ModelAttribute Coche coche, @PathVariable Integer id) {
+		CustomResponse response = new CustomResponse();
 		cocheService.updateCoche(coche);
-		
-		String message = "Coche was successfully edited.";
-		modelAndView.addObject("message", message);
-		
-		return modelAndView;
+		response.setMsg("Coche "+coche.getId() + " editado correctamente");
+		response.setBody(coche.toJSON());
+		return response;
 	}
 	
-	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
-	public ModelAndView deleteCoche(@PathVariable Integer id) {
-		ModelAndView modelAndView = new ModelAndView("home");
+	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
+	public @ResponseBody CustomResponse deleteCoche(@PathVariable Integer id) {
+		CustomResponse response = new CustomResponse();
 		cocheService.deleteCoche(id);
-		String message = "Coche was successfully deleted.";
-		modelAndView.addObject("message", message);
-		return modelAndView;
+		response.setMsg("Coche "+ id + " eliminado correctamente");
+		response.setBody(new Coche().toJSON());
+		return response;
 	}
 	
 }
