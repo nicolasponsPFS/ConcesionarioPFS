@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.Gson;
 import com.pfs.project.model.Vendedor;
 import com.pfs.project.service.VendedorService;
-import com.pfs.project.util.CustomResponse;
 
 @Controller
 @RequestMapping(value = "/vendedor")
@@ -19,61 +21,49 @@ public class VendedorController {
 	private VendedorService vendedorService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public @ResponseBody CustomResponse loginCheck(@ModelAttribute Vendedor vendedor) {
+	public @ResponseBody String loginCheck(@RequestBody String json) {
+		Vendedor vendedor = new Gson().fromJson(json, Vendedor.class);
 		Vendedor v = vendedorService.getVendedorByUsername(vendedor.getUsuario());
-		CustomResponse response = new CustomResponse();
 		if (v != null) {
 			if (v.getPass().equals(vendedor.getPass())) {
-				response.setMsg("Correcto");
-				response.setBody(v.toJSON());
+				return new Gson().toJson(v, Vendedor.class);
 			}
 			else {
-				response.setMsg("ContraseÃ±a no valida");
+				return new Gson().toJson("Contraseña no valida");
 			}
-		} else {
-			response.setMsg("Usuario no valido");
 		}
-			
-		return response;
+		return new Gson().toJson("Error al iniciar sesion");
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public @ResponseBody CustomResponse addingVendedor(@ModelAttribute Vendedor vendedor) {
+	public @ResponseBody String addingVendedor(@RequestBody String json) {
+		Vendedor vendedor = new Gson().fromJson(json, Vendedor.class);
 		Vendedor v = vendedorService.getVendedorByUsername(vendedor.getNombre());
-		CustomResponse response = new CustomResponse();
 		if (v == null) {
 			vendedorService.addVendedor(vendedor);
-			response.setMsg("Usuario registrado correctamente");
-			response.setBody(vendedor.toJSON());
+			return new Gson().toJson(v);
 		} else {
-			response.setMsg("El usuario "+vendedor.getUsuario()+" ya existe");
+			return new Gson().toJson("El usuario ya existe");
 		}
-		return response;
 	}
 
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.PUT)
-	public @ResponseBody CustomResponse edditingVendedor(@ModelAttribute Vendedor vendedor, @PathVariable Integer id) {
-		CustomResponse response = new CustomResponse();
+	public @ResponseBody String edditingVendedor(@RequestBody String json, @PathVariable Integer id) {
+		Vendedor vendedor = new Gson().fromJson(json, Vendedor.class);
 		vendedorService.updateVendedor(vendedor);
-		response.setMsg("Usuario actualizado correctamente");
-		response.setBody(vendedor.toJSON());
-		return response;
+		return new Gson().toJson(vendedor);
 	}
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-	public @ResponseBody CustomResponse deleteVendedor(@PathVariable Integer id) {
-		CustomResponse response = new CustomResponse();
+	public @ResponseBody String deleteVendedor(@PathVariable Integer id) {
+		Vendedor v = vendedorService.getVendedor(id);
 		vendedorService.deleteVendedor(id);
-		response.setMsg("Usuario borrado con id: "+id);
-		return response;
+		return new Gson().toJson(v);
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
-	public @ResponseBody CustomResponse logout() {
-		CustomResponse response = new CustomResponse();
-		response.setMsg("Adios!");
-		response.setBody(new Vendedor().toJSON());
-		return response;
+	public @ResponseBody String logout() {
+		return null;
 	}
 
 }

@@ -1,23 +1,19 @@
 package com.pfs.project.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.json.JSONObject;
-
 @Entity
-@Table(name="Vendedor")
+@Table(name = "Vendedor")
 public class Vendedor {
-	
-	@Id 
+
+	@Id
 	@GeneratedValue
 	private Integer id;
 	private String usuario, pass, nombre, apellido;
-	
+
 	public Vendedor() {
 		super();
 	}
@@ -71,20 +67,9 @@ public class Vendedor {
 		this.apellido = apellido;
 	}
 
-	
 	public String print() {
 		return "Vendedor [id=" + id + ", usuario=" + usuario + ", pass=" + pass + ", nombre=" + nombre + ", apellido="
 				+ apellido + "]";
 	}
-	
-	public JSONObject toJSON() {
-		JSONObject obj = new JSONObject();
-		obj.put("id", id);
-		obj.put("nombre", nombre);
-		obj.put("apellido", apellido);
-		obj.put("usuario", usuario);
-		obj.put("pass", pass);
-		return obj;
-	}
-	
+
 }
