@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.pfs.project.model.Vendedor;
-import com.pfs.project.service.interfaces.VendedorServiceInterface;
+import com.pfs.project.service.VendedorService;
 import com.pfs.project.util.CustomResponse;
 
 @Controller
@@ -16,7 +16,7 @@ import com.pfs.project.util.CustomResponse;
 public class VendedorController {
 
 	@Autowired
-	private VendedorServiceInterface vendedorService;
+	private VendedorService vendedorService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public @ResponseBody CustomResponse loginCheck(@ModelAttribute Vendedor vendedor) {

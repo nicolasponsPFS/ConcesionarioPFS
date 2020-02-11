@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pfs.project.model.Coche;
 import com.pfs.project.model.Vendedor;
-import com.pfs.project.service.interfaces.CocheServiceInterface;
-import com.pfs.project.service.interfaces.VendedorServiceInterface;
+import com.pfs.project.service.CocheService;
+import com.pfs.project.service.VendedorService;
 import com.pfs.project.util.CustomResponse;
 
 @Controller
@@ -21,10 +21,10 @@ import com.pfs.project.util.CustomResponse;
 public class VendedorCocheController {
 
 	@Autowired
-	private VendedorServiceInterface vendedorService;
+	private VendedorService vendedorService;
 	
 	@Autowired
-	private CocheServiceInterface cocheService;
+	private CocheService cocheService;
 	
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public @ResponseBody CustomResponse listCochesVendedor(@PathVariable Integer idVendedor) {

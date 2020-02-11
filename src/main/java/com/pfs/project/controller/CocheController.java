@@ -14,8 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.pfs.project.model.Coche;
 import com.pfs.project.model.Vendedor;
+import com.pfs.project.service.CocheServiceImpl;
 import com.pfs.project.service.CocheService;
-import com.pfs.project.service.interfaces.CocheServiceInterface;
 import com.pfs.project.util.CustomResponse;
 
 @Controller
@@ -23,7 +23,7 @@ import com.pfs.project.util.CustomResponse;
 public class CocheController {
 
 	@Autowired
-	private CocheServiceInterface cocheService;
+	private CocheService cocheService;
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
 	public @ResponseBody CustomResponse addingCoche(@ModelAttribute Coche coche) {
