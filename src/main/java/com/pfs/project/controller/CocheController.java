@@ -52,7 +52,8 @@ public class CocheController {
 	@RequestMapping(value="/edit/{id}", method=RequestMethod.PUT)
 	public @ResponseBody String edditingCoche(@RequestBody String json, @PathVariable Integer id) {
 		Coche coche = new Gson().fromJson(json, Coche.class);
-		cocheService.updateCoche(coche);
+		Coche c = cocheService.getCoche(id);
+		cocheService.updateCoche(c);
 		return new Gson().toJson(coche);
 	}
 	
@@ -60,6 +61,7 @@ public class CocheController {
 	public @ResponseBody String deleteCoche(@PathVariable Integer id) {
 		Coche coche = cocheService.getCoche(id);
 		cocheService.deleteCoche(id);
+		System.out.println(coche.print());
 		return new Gson().toJson(coche);
 	}
 	

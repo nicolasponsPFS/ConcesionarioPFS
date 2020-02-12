@@ -45,6 +45,7 @@ public class VendedorCocheController {
 		Coche c = cocheService.getCoche(id);
 		Vendedor v = vendedorService.getVendedor(idVendedor);
 		c.setVendedor(v);
+		c.setDisponible(false);
 		cocheService.updateCoche(c);
 		return new Gson().toJson(c);
 	}
