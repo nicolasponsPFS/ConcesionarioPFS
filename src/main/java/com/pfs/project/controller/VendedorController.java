@@ -2,7 +2,7 @@ package com.pfs.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +15,7 @@ import com.pfs.project.service.VendedorService;
 
 @Controller
 @RequestMapping(value = "/vendedor")
+@CrossOrigin(origins="*", methods={RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
 public class VendedorController {
 
 	@Autowired
@@ -29,10 +30,10 @@ public class VendedorController {
 				return new Gson().toJson(v, Vendedor.class);
 			}
 			else {
-				return new Gson().toJson("Contraseña no valida");
+				return new Gson().toJson("Pass");
 			}
 		}
-		return new Gson().toJson("Error al iniciar sesion");
+		return new Gson().toJson("KO");
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
