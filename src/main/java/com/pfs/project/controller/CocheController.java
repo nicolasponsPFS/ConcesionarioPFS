@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.pfs.project.model.Coche;
 import com.pfs.project.service.CocheService;
+import com.pfs.project.service.VendedorService;
 
 @Controller
 @RequestMapping(value="/coche")
@@ -23,6 +24,9 @@ public class CocheController {
 	@Autowired
 	private CocheService cocheService;
 	
+	@Autowired
+	private VendedorService vendedorService;
+	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public @ResponseBody String getCoche(@PathVariable Integer id) {
 		Coche coche = cocheService.getCoche(id);
@@ -31,8 +35,9 @@ public class CocheController {
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
 	public @ResponseBody String addingCoche(@RequestBody String json) {
-		System.out.println(json);
 		Coche coche = new Gson().fromJson(json, Coche.class);
+		coche.setDisponible(true);
+		coche.setVendedor(vendedorService.getVendedor(1));
 		cocheService.addCoche(coche);
 		return new Gson().toJson(coche);
 	}

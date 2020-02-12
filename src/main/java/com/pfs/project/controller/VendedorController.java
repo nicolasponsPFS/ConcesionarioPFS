@@ -44,7 +44,7 @@ public class VendedorController {
 			vendedorService.addVendedor(vendedor);
 			return new Gson().toJson(v);
 		} else {
-			return new Gson().toJson("El usuario ya existe");
+			return new Gson().toJson("Exist");
 		}
 	}
 
