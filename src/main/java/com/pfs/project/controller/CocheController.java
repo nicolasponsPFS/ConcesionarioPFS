@@ -31,6 +31,7 @@ public class CocheController {
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
 	public @ResponseBody String addingCoche(@RequestBody String json) {
+		System.out.println(json);
 		Coche coche = new Gson().fromJson(json, Coche.class);
 		cocheService.addCoche(coche);
 		return new Gson().toJson(coche);
@@ -38,6 +39,7 @@ public class CocheController {
 	
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public @ResponseBody String listOfCoches() {
+		System.out.println("lista de coches");
 		List<Coche> coches = cocheService.getCoches();
 		return new Gson().toJson(coches);
 	}

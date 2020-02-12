@@ -24,8 +24,7 @@ public class Coche {
 	@Enumerated(EnumType.STRING)
 	@Column(columnDefinition = "ENUM('Gasolina', 'Diesel', 'Hibrido', 'Electrico')")
 	private Motor motor = Motor.Gasolina;
-	private Double precio;
-	private Integer anyo, potencia;
+	private Integer precio,anyo, potencia;
 	private Boolean disponible;
 	@ManyToOne(targetEntity = Vendedor.class)
 	@JoinColumn(name = "vendedor_id")
@@ -35,7 +34,7 @@ public class Coche {
 		super();
 	}
 
-	public Coche(Integer id, String marca, String modelo, String matricula, Estado estado, Motor motor, Double precio,
+	public Coche(Integer id, String marca, String modelo, String matricula, Estado estado, Motor motor, Integer precio,
 			Integer anyo, Integer potencia, Boolean disponible, Vendedor vendedor) {
 		super();
 		this.id = id;
@@ -99,11 +98,11 @@ public class Coche {
 		this.motor = motor;
 	}
 
-	public Double getPrecio() {
+	public Integer getPrecio() {
 		return precio;
 	}
 
-	public void setPrecio(Double precio) {
+	public void setPrecio(Integer precio) {
 		this.precio = precio;
 	}
 

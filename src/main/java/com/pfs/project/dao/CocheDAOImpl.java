@@ -39,7 +39,8 @@ public class CocheDAOImpl implements CocheDAO {
 	}
 
 	public List<Coche> getCoches() {
-		return getCurrentSession().createQuery("from " + TABLE_NAME).list();
+		String hql = "from "+TABLE_NAME+" c where c.disponible = :disp";
+		return getCurrentSession().createQuery(hql).setParameter("disp", true).list();
 	}
 
 }
